@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #    any2textDIRGUI
-#    Copyright (C) 2023  Antoni Oliver
+#    Copyright (C) 2025  Antoni Oliver
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -58,24 +58,27 @@ def go():
        os.makedirs(outputdir)
 
     for file_path in os.listdir(inputdir):
-        if os.path.isfile:
-            error=False
-            file_pathIN=os.path.join(inputdir, file_path)
-            file_name, file_extension = os.path.splitext(file_path)
-            file_pathOUT=os.path.join(outputdir, file_path+".txt")
-            sortida=codecs.open(file_pathOUT,"w",encoding="utf-8")
-            try:
-                text = textract.process(file_pathIN).decode("utf-8")
-            except:
-                print("ERROR converting:",file_pathIN,sys.exc_info())
-                error=True
-            if not error:
-                if fixpdf and file_extension in [".pdf",".PDF"]:
-                    text=arregla(text)
-                for linia in text.split("\n"):
-                    linia=linia.rstrip()
-                    sortida.write(linia+"\n")
-                sortida.close()
+        #file_path = os.path.normpath(file_path)
+        #if os.path.isfile(file_path):
+        error=False
+        file_pathIN=os.path.join(inputdir, file_path)
+        file_pathIN = os.path.normpath(file_pathIN)
+        file_name, file_extension = os.path.splitext(file_path)
+        file_pathOUT=os.path.join(outputdir, file_path+".txt")
+        file_pathOUT = os.path.normpath(file_pathOUT)
+        sortida=codecs.open(file_pathOUT,"w",encoding="utf-8")
+        try:
+            text = textract.process(file_pathIN).decode("utf-8")
+        except:
+            print("ERROR converting:",file_pathIN,sys.exc_info())
+            error=True
+        if not error:
+            if fixpdf and file_extension in [".pdf",".PDF"]:
+                text=arregla(text)
+            for linia in text.split("\n"):
+                linia=linia.rstrip()
+                sortida.write(linia+"\n")
+            sortida.close()
 
 
 top = Tk()
